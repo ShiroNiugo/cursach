@@ -21,7 +21,7 @@ namespace KorRegr
 
         private void ShowNewForm(object sender, EventArgs e)
         {
-            Form childForm = new Form();
+            Form1 childForm = new Form1();
             childForm.MdiParent = this;
             childForm.Text = "Окно " + childFormNumber++;
             childForm.Show();

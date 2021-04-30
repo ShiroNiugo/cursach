@@ -172,13 +172,6 @@
             this.windowsMenu.Size = new System.Drawing.Size(113, 37);
             this.windowsMenu.Text = "&Окна";
             // 
-            // newWindowToolStripMenuItem
-            // 
-            this.newWindowToolStripMenuItem.Name = "newWindowToolStripMenuItem";
-            this.newWindowToolStripMenuItem.Size = new System.Drawing.Size(294, 38);
-            this.newWindowToolStripMenuItem.Text = "&Новое окно";
-            this.newWindowToolStripMenuItem.Click += new System.EventHandler(this.ShowNewForm);
-            // 
             // cascadeToolStripMenuItem
             // 
             this.cascadeToolStripMenuItem.Name = "cascadeToolStripMenuItem";

@@ -13,20 +13,12 @@ namespace KorRegr
 {
     public partial class MDIParent1 : Form
     {
-        private int childFormNumber = 0;
+        private int childFormNumber = 1;
         Form1 f = new Form1();
 
         public MDIParent1()
         {
             InitializeComponent();
-        }
-
-        private void ShowNewForm(object sender, EventArgs e)
-        {
-            Form1 childForm = new Form1();
-            childForm.MdiParent = this;
-            childForm.Text = "Окно " + childFormNumber++;
-            childForm.Show();
         }
 
         double Xn, Xh, dX, x, y, x1, y1;
@@ -63,33 +55,28 @@ namespace KorRegr
             childForm.Text = "Окно " + childFormNumber++;
             openFileDialog1.Filter = file;
             openFileDialog1.FileName = namefile;
+            double x2, y2, xy, ee = 0, rr = 0, tt = 0, yy = 0, uu = 0;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 clearForm();
+                int nomer = 1;
 
                 foreach (string line in File.ReadLines(openFileDialog1.FileName))
                 {
                     string[] array = line.Split(";".ToCharArray());
-                    if (array[0] != string.Empty && array[1] != string.Empty && double.TryParse(array[0], out x) && double.TryParse(array[1], out y)) // проверка пустоту ячейки в строке
+                    if (array[0] != string.Empty && array[1] != string.Empty && double.TryParse(array[0], out x) && double.TryParse(array[1], out y)) // проверка пустоты ячейки в строке
                     {
-                        childForm.dataGridView1.Rows.Add(x, y, Math.Pow(x, 2), Math.Pow(y, 2), x*y); // добавление строки
+                        x2 = Math.Pow(x, 2);
+                        y2 = Math.Pow(y, 2);
+                        xy = x * y;
+                        ee += x; rr += y; tt += x2; yy += y2; uu += xy;
+                        childForm.dataGridView1.Rows.Add(nomer++, x, y, x2, y2, xy); // добавление строки
                         childForm.chart1.Series[0].Points.AddXY(x, y); // добавление точки
-                        //for (int i = 0; i < array.Length; i++)
-                        //{
-                        //    for (int j = 0; j < childForm.dataGridView1.ColumnCount; j++)
-                        //    {
-                        //        if (j == 0)
-                        //        {
-                        //            double.TryParse(array[j], out x);
-                        //        }
-                        //        else
-                        //        {
-                        //            double.TryParse(array[j], out y);
-                        //        }
-                        //    }
-                        //}
                     }
                 }
+                childForm.dataGridView1.Rows.Add("Сумма", ee, rr, tt, yy, uu);
+                childForm.dataGridView1.Rows.Add("Средняя величина", ee/nomer, rr/nomer, tt / nomer, yy / nomer, uu / nomer);
+
                 saveFileDialog1.FileName = openFileDialog1.FileName;
                 namefile = openFileDialog1.SafeFileName;
             }

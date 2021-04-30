@@ -14,12 +14,11 @@ namespace KorRegr
 {
     public partial class Form1 : Form
     {
-        //double Xn, Xh, dX, x, z;
-        //string namefile = "", file = "Text files (*.txt)|*.txt";
+        public double[,] d;
+
         public Form1()
         {
             InitializeComponent();
-            //chart1.Series[0].ChartType = SeriesChartType.Spline;
         }
     
     }

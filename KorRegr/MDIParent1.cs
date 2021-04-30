@@ -66,12 +66,23 @@ namespace KorRegr
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 clearForm();
+                int n = 1;
 
                 foreach (string line in File.ReadLines(openFileDialog1.FileName))
                 {
                     string[] array = line.Split(";".ToCharArray());
                     if (array[0] != string.Empty && array[1] != string.Empty && double.TryParse(array[0], out x) && double.TryParse(array[1], out y)) // проверка пустоту ячейки в строке
                     {
+                        //childForm.d = new double[n, 1];
+                        //for (int i = n-1; i < childForm.d.Length; i++)
+                        //{
+                        //    for (int j = n; j < childForm.d.Length; j++)
+                        //    {
+                        //        childForm.d[i, 1] = x;
+                        //        childForm.d[i + 1, 1] = y;
+                        //    }
+                        //}
+                        //n += 1;
                         childForm.dataGridView1.Rows.Add(x, y, Math.Pow(x, 2), Math.Pow(y, 2), x*y); // добавление строки
                         childForm.chart1.Series[0].Points.AddXY(x, y); // добавление точки
                         //for (int i = 0; i < array.Length; i++)

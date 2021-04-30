@@ -66,8 +66,11 @@ namespace KorRegr
                     string[] array = line.Split(";".ToCharArray());
                     if (array[0] != string.Empty && array[1] != string.Empty && double.TryParse(array[0], out x) && double.TryParse(array[1], out y)) // проверка пустоты ячейки в строке
                     {
-                        
-                        childForm.dataGridView1.Rows.Add(x, y, Math.Pow(x, 2), Math.Pow(y, 2), x*y); // добавление строки
+                        x2 = Math.Pow(x, 2);
+                        y2 = Math.Pow(y, 2);
+                        xy = x * y;
+                        ee+=x;rr+=y;tt+=x2;yy+=y2;uu+=xy;
+                        childForm.dataGridView1.Rows.Add(nomer++, x, y, x2, y2, xy); // добавление строки
                         childForm.chart1.Series[0].Points.AddXY(x, y); // добавление точки
                     }
                 }

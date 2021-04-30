@@ -59,6 +59,7 @@ namespace KorRegr
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 clearForm();
+
                 int nomer = 1;
 
                 foreach (string line in File.ReadLines(openFileDialog1.FileName))

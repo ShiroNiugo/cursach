@@ -13,20 +13,12 @@ namespace KorRegr
 {
     public partial class MDIParent1 : Form
     {
-        private int childFormNumber = 0;
+        private int childFormNumber = 1;
         Form1 f = new Form1();
 
         public MDIParent1()
         {
             InitializeComponent();
-        }
-
-        private void ShowNewForm(object sender, EventArgs e)
-        {
-            Form1 childForm = new Form1();
-            childForm.MdiParent = this;
-            childForm.Text = "Окно " + childFormNumber++;
-            childForm.Show();
         }
 
         double Xn, Xh, dX, x, y, x1, y1;
@@ -63,44 +55,25 @@ namespace KorRegr
             childForm.Text = "Окно " + childFormNumber++;
             openFileDialog1.Filter = file;
             openFileDialog1.FileName = namefile;
+            double x2, y2, xy, ee = 0, rr = 0, tt = 0, yy = 0, uu = 0;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 clearForm();
-                int n = 1;
+                int nomer = 1;
 
                 foreach (string line in File.ReadLines(openFileDialog1.FileName))
                 {
                     string[] array = line.Split(";".ToCharArray());
-                    if (array[0] != string.Empty && array[1] != string.Empty && double.TryParse(array[0], out x) && double.TryParse(array[1], out y)) // проверка пустоту ячейки в строке
+                    if (array[0] != string.Empty && array[1] != string.Empty && double.TryParse(array[0], out x) && double.TryParse(array[1], out y)) // проверка пустоты ячейки в строке
                     {
-                        //childForm.d = new double[n, 1];
-                        //for (int i = n-1; i < childForm.d.Length; i++)
-                        //{
-                        //    for (int j = n; j < childForm.d.Length; j++)
-                        //    {
-                        //        childForm.d[i, 1] = x;
-                        //        childForm.d[i + 1, 1] = y;
-                        //    }
-                        //}
-                        //n += 1;
+                        
                         childForm.dataGridView1.Rows.Add(x, y, Math.Pow(x, 2), Math.Pow(y, 2), x*y); // добавление строки
                         childForm.chart1.Series[0].Points.AddXY(x, y); // добавление точки
-                        //for (int i = 0; i < array.Length; i++)
-                        //{
-                        //    for (int j = 0; j < childForm.dataGridView1.ColumnCount; j++)
-                        //    {
-                        //        if (j == 0)
-                        //        {
-                        //            double.TryParse(array[j], out x);
-                        //        }
-                        //        else
-                        //        {
-                        //            double.TryParse(array[j], out y);
-                        //        }
-                        //    }
-                        //}
                     }
                 }
+                childForm.dataGridView1.Rows.Add("Сумма", ee, rr, tt, yy, uu);
+                childForm.dataGridView1.Rows.Add("Средняя величина", ee/nomer, rr/nomer, tt / nomer, yy / nomer, uu / nomer);
+
                 saveFileDialog1.FileName = openFileDialog1.FileName;
                 namefile = openFileDialog1.SafeFileName;
             }

@@ -59,13 +59,17 @@ namespace KorRegr
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 clearForm();
-                int nomer = 1;
+                int nomer = 1, n = 1;
+                childForm.d = new double[2,n];
 
                 foreach (string line in File.ReadLines(openFileDialog1.FileName))
                 {
                     string[] array = line.Split(";".ToCharArray());
-                    if (array[0] != string.Empty && array[1] != string.Empty && double.TryParse(array[0], out x) && double.TryParse(array[1], out y)) // проверка пустоты ячейки в строке
+                    if (array[0] != string.Empty && array[1] != string.Empty && double.TryParse(array[0], out x) && double.TryParse(array[1], out y)) // проверка пустоты и на число ячейки в строке
                     {
+                        childForm.d[0, n] += Convert.ToDouble(array[0]);
+                        childForm.d[1, n] += Convert.ToDouble(array[1]);
+                        n++;
                         x2 = Math.Pow(x, 2);
                         y2 = Math.Pow(y, 2);
                         xy = x * y;

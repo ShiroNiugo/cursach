@@ -59,27 +59,43 @@ namespace KorRegr
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 clearForm();
-                int nomer = 1, n = 1;
-                childForm.d = new double[2,n];
+                int nomer = 1, n = 0, k = 0;
+                double[] d = new double[2];
 
                 foreach (string line in File.ReadLines(openFileDialog1.FileName))
                 {
                     string[] array = line.Split(";".ToCharArray());
                     if (array[0] != string.Empty && array[1] != string.Empty && double.TryParse(array[0], out x) && double.TryParse(array[1], out y)) // проверка пустоты и на число ячейки в строке
                     {
-                        childForm.d[0, n] += Convert.ToDouble(array[0]);
-                        childForm.d[1, n] += Convert.ToDouble(array[1]);
+                        d[d.Length-2] = x; d[d.Length-1] = y;
+                        Array.Resize(ref d, d.Length + 2);
+
                         n++;
                         x2 = Math.Pow(x, 2);
                         y2 = Math.Pow(y, 2);
                         xy = x * y;
-                        ee+=x;rr+=y;tt+=x2;yy+=y2;uu+=xy;
+                        ee+=x; rr+=y; tt+=x2; yy+=y2; uu+=xy;
                         childForm.dataGridView1.Rows.Add(nomer++, x, y, x2, y2, xy); // добавление строки
                         childForm.chart1.Series[0].Points.AddXY(x, y); // добавление точки
                     }
                 }
+                childForm.d = new double[n, 2];
+                while (k < n) {
+                    for (int i = 0; i < n; i++)
+                        for (int j = 0; j < 2; j++)
+                        {
+                            childForm.d[i, j] = d[k];
+                            k++;
+                        }
+                }
+
+                for (int i = 0; i < n; i++)
+                    childForm.dataGridView2.Rows.Add(childForm.d[i, 0], childForm.d[i, 1]);
+                    
+                
                 childForm.dataGridView1.Rows.Add("Сумма", ee, rr, tt, yy, uu);
                 childForm.dataGridView1.Rows.Add("Средняя величина", ee/nomer, rr/nomer, tt / nomer, yy / nomer, uu / nomer);
+
 
                 saveFileDialog1.FileName = openFileDialog1.FileName;
                 namefile = openFileDialog1.SafeFileName;

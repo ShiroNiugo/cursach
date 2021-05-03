@@ -14,7 +14,7 @@ namespace KorRegr
 {
     public partial class Form1 : Form
     {
-        //public const int n = 0;
+        public int n;
         public double[,] d;
 
         public Form1()

@@ -101,6 +101,7 @@ namespace KorRegr
 
                 int u = 0, o = 0;
                 var array1 = new double[n];
+                for (int i = 0; i < n; i++) array1[i] = childForm.d[i, 0];
                 var len = array1.Length;
                 for (var i = 1; i < len; i++)
                 {
@@ -115,8 +116,8 @@ namespace KorRegr
 
                 for (int i = 0; i < n; i++)
                 {
-                    int p = array1[i];
-                    o = (int)childForm.dataGridView2[i, 0].Value;
+                    double p = array1[i];
+                    o = Convert.ToDouble(childForm.dataGridView2[i, 0].Value);
                     if (o == p) childForm.dataGridView2.Rows.Add(u);
                     if (o < p) u++; 
                 }

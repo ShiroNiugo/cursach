@@ -67,20 +67,21 @@ namespace KorRegr
                     string[] array = line.Split(";".ToCharArray());
                     if (array[0] != string.Empty && array[1] != string.Empty && double.TryParse(array[0], out x) && double.TryParse(array[1], out y)) // проверка пустоты и на число ячейки в строке
                     {
-                        d[d.Length-2] = x; d[d.Length-1] = y;
+                        d[d.Length - 2] = x; d[d.Length - 1] = y;
                         Array.Resize(ref d, d.Length + 2);
 
                         n++;
                         x2 = Math.Pow(x, 2);
                         y2 = Math.Pow(y, 2);
                         xy = x * y;
-                        ee+=x; rr+=y; tt+=x2; yy+=y2; uu+=xy;
+                        ee += x; rr += y; tt += x2; yy += y2; uu += xy;
                         childForm.dataGridView1.Rows.Add(nomer++, x, y, x2, y2, xy); // добавление строки
                         childForm.chart1.Series[0].Points.AddXY(x, y); // добавление точки
                     }
                 }
                 childForm.d = new double[n, 2];
-                while (k < n) {
+                while (k < n)
+                {//запись из 1 в 2 массив
                     for (int i = 0; i < n; i++)
                         for (int j = 0; j < 2; j++)
                         {
@@ -89,37 +90,30 @@ namespace KorRegr
                         }
                 }
 
-                for (int i = 0; i < n; i++)
+                for (int i = 0; i < n; i++)// заполнение 2 таблицы
                     childForm.dataGridView2.Rows.Add(childForm.d[i, 0], childForm.d[i, 1]);
 
-                void Swap(ref double e1, ref double e2)
-                {
-                    var temp = e1;
-                    e1 = e2;
-                    e2 = temp;
-                }
-
-                int u = 0, o = 0;
                 var array1 = new double[n];
-                for (int i = 0; i < n; i++) array1[i] = childForm.d[i, 0];
-                var len = array1.Length;
-                for (var i = 1; i < len; i++)
-                {
-                    for (var j = 0; j < len - i; j++)
-                    {
-                        if (array1[j] > array1[j + 1])
-                        {
-                            Swap(ref array1[j], ref array1[j + 1]);
-                        }
-                    }
-                }
 
-                for (int i = 0; i < n; i++)
-                {
+                for (int i = 0; i < n; i++) array1[i] = childForm.d[i, 0];
+
+                for (var i = 1; i < n; i++)//сортировка
+                    for (var j = 0; j < n - i; j++)
+                        if (array1[j] > array1[j + 1] && array1[j] != array1[j + 1])
+                        {
+                            var temp = array1[j];
+                            array1[j] = array1[j + 1];
+                            array1[j + 1] = temp;
+                        }
+
+                int u = 1;
+                for (int i = 0; i < n; i++) {
                     double p = array1[i];
-                    o = Convert.ToDouble(childForm.dataGridView2[i, 0].Value);
-                    if (o == p) childForm.dataGridView2.Rows.Add(u);
-                    if (o < p) u++; 
+                    for (int j = 0; j < n-i; j++) {
+                        double o = (double)childForm.dataGridView2[0, j].Value;
+                        if (o >= p) childForm.dataGridView2.Rows[j].Cells[2].Value = u;
+                        if (o <= p) u++;
+                    }
                 }
 
                 childForm.dataGridView1.Rows.Add("Сумма", ee, rr, tt, yy, uu);

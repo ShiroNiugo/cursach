@@ -91,8 +91,36 @@ namespace KorRegr
 
                 for (int i = 0; i < n; i++)
                     childForm.dataGridView2.Rows.Add(childForm.d[i, 0], childForm.d[i, 1]);
-                    
-                
+
+                void Swap(ref double e1, ref double e2)
+                {
+                    var temp = e1;
+                    e1 = e2;
+                    e2 = temp;
+                }
+
+                int u = 0, o = 0;
+                var array1 = new double[n];
+                var len = array1.Length;
+                for (var i = 1; i < len; i++)
+                {
+                    for (var j = 0; j < len - i; j++)
+                    {
+                        if (array1[j] > array1[j + 1])
+                        {
+                            Swap(ref array1[j], ref array1[j + 1]);
+                        }
+                    }
+                }
+
+                for (int i = 0; i < n; i++)
+                {
+                    int p = array1[i];
+                    o = (int)childForm.dataGridView2[i, 0].Value;
+                    if (o == p) childForm.dataGridView2.Rows.Add(u);
+                    if (o < p) u++; 
+                }
+
                 childForm.dataGridView1.Rows.Add("Сумма", ee, rr, tt, yy, uu);
                 childForm.dataGridView1.Rows.Add("Средняя величина", ee/nomer, rr/nomer, tt / nomer, yy / nomer, uu / nomer);
 

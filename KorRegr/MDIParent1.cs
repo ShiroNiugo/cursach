@@ -89,36 +89,36 @@ namespace KorRegr
                             k++;
                         }
                 }
+                childForm.dataGridView1.Rows.Add("Сумма", ee, rr, tt, yy, uu);
+                childForm.dataGridView1.Rows.Add("Средняя величина", ee/nomer, rr/nomer, tt / nomer, yy / nomer, uu / nomer);
 
-                for (int i = 0; i < n; i++)// заполнение 2 таблицы
+                
+                // заполнение 2 таблицы
+                for (int i = 0; i < n; i++)
                     childForm.dataGridView2.Rows.Add(childForm.d[i, 0], childForm.d[i, 1]);
-
+                
                 var array1 = new double[n];
 
                 for (int i = 0; i < n; i++) array1[i] = childForm.d[i, 0];
 
-                for (var i = 1; i < n; i++)//сортировка
-                    for (var j = 0; j < n - i; j++)
-                        if (array1[j] > array1[j + 1] && array1[j] != array1[j + 1])
+                // Сортировка по убыванию
+                //Array.Sort(array1);
+                for (int i = 1; i < array1.Length; i++)
+                    for (int j = 0; j < array1.Length - 1; j++)
+                        if (array1[j + 1] > array1[j])
                         {
-                            var temp = array1[j];
+                            var t = array1[j];
                             array1[j] = array1[j + 1];
-                            array1[j + 1] = temp;
+                            array1[j + 1] = t;
                         }
 
-                int u = 1;
-                for (int i = 0; i < n; i++) {
-                    double p = array1[i];
-                    for (int j = 0; j < n-i; j++) {
-                        double o = (double)childForm.dataGridView2[0, j].Value;
-                        if (o >= p) childForm.dataGridView2.Rows[j].Cells[2].Value = u;
-                        if (o <= p) u++;
-                    }
-                }
-
-                childForm.dataGridView1.Rows.Add("Сумма", ee, rr, tt, yy, uu);
-                childForm.dataGridView1.Rows.Add("Средняя величина", ee/nomer, rr/nomer, tt / nomer, yy / nomer, uu / nomer);
-
+                for (int i = 0; i < array1.Length; i++)
+                        childForm.dataGridView2.Rows[i].Cells[3].Value = array1[i];
+                
+                for (int i = 0; i < array1.Length; i++)
+                    for (int j = 0; j < array1.Length; j++)
+                        if (array1[i] == (double)childForm.dataGridView2[0, j].Value)
+                            childForm.dataGridView2.Rows[j].Cells[2].Value = i+1;
 
                 saveFileDialog1.FileName = openFileDialog1.FileName;
                 namefile = openFileDialog1.SafeFileName;

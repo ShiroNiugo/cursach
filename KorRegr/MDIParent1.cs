@@ -60,16 +60,15 @@ namespace KorRegr
             {
                 clearForm();
                 int nomer = 1, n = 0, k = 0;
-                double[] d = new double[2];
+                double[] MassivDannhIzFile = new double[2];
 
-                foreach (string line in File.ReadLines(openFileDialog1.FileName))
+                foreach (string row in File.ReadLines(openFileDialog1.FileName))
                 {
-                    string[] array = line.Split(";".ToCharArray());
-                    if (array[0] != string.Empty && array[1] != string.Empty && double.TryParse(array[0], out x) && double.TryParse(array[1], out y)) // проверка пустоты и на число ячейки в строке
+                    string[] DanneIzFile = row.Split(";".ToCharArray());
+                    if (DanneIzFile[0] != string.Empty && DanneIzFile[1] != string.Empty && double.TryParse(DanneIzFile[0], out x) && double.TryParse(DanneIzFile[1], out y)) // проверка пустоты и на число ячейки в строке
                     {
-                        d[d.Length - 2] = x; d[d.Length - 1] = y;
-                        Array.Resize(ref d, d.Length + 2);
-
+                        MassivDannhIzFile[MassivDannhIzFile.Length - 2] = x; MassivDannhIzFile[MassivDannhIzFile.Length - 1] = y;
+                        Array.Resize(ref MassivDannhIzFile, MassivDannhIzFile.Length + 2);
                         n++;
                         x2 = Math.Pow(x, 2);
                         y2 = Math.Pow(y, 2);
@@ -85,40 +84,87 @@ namespace KorRegr
                     for (int i = 0; i < n; i++)
                         for (int j = 0; j < 2; j++)
                         {
-                            childForm.d[i, j] = d[k];
+                            childForm.d[i, j] = MassivDannhIzFile[k];
                             k++;
                         }
                 }
                 childForm.dataGridView1.Rows.Add("Сумма", ee, rr, tt, yy, uu);
                 childForm.dataGridView1.Rows.Add("Средняя величина", ee/nomer, rr/nomer, tt / nomer, yy / nomer, uu / nomer);
 
-                
+
                 // заполнение 2 таблицы
                 for (int i = 0; i < n; i++)
                     childForm.dataGridView2.Rows.Add(childForm.d[i, 0], childForm.d[i, 1]);
-                
-                var array1 = new double[n];
 
-                for (int i = 0; i < n; i++) array1[i] = childForm.d[i, 0];
+                // для Nx
+                var SortMasX = new double[n];
+                var DlyaRangNx = new double[n];
+                int kk = 0;
+
+                for (int i = 0; i < n; i++) SortMasX[i] = childForm.d[i, 0];
 
                 // Сортировка по убыванию
-                //Array.Sort(array1);
-                for (int i = 1; i < array1.Length; i++)
-                    for (int j = 0; j < array1.Length - 1; j++)
-                        if (array1[j + 1] > array1[j])
+                for (int i = 0; i < SortMasX.Length; i++)
+                    for (int j = 0; j < SortMasX.Length - 1; j++)
+                    {
+                        if (SortMasX[j + 1] > SortMasX[j])
                         {
-                            var t = array1[j];
-                            array1[j] = array1[j + 1];
-                            array1[j + 1] = t;
+                            var t = SortMasX[j];
+                            SortMasX[j] = SortMasX[j + 1];
+                            SortMasX[j + 1] = t;
                         }
+                    }
+                for (int i = 1; i < SortMasX.Length; i++)
+                    if (SortMasX[i] != SortMasX[i - 1])
+                    {
+                        var t = SortMasX[i];
+                        DlyaRangNx[kk] = SortMasX[i - 1];
+                        DlyaRangNx[kk + 1] = t;
+                        kk++;
+                    }
 
-                for (int i = 0; i < array1.Length; i++)
-                        childForm.dataGridView2.Rows[i].Cells[3].Value = array1[i];
-                
-                for (int i = 0; i < array1.Length; i++)
-                    for (int j = 0; j < array1.Length; j++)
-                        if (array1[i] == (double)childForm.dataGridView2[0, j].Value)
-                            childForm.dataGridView2.Rows[j].Cells[2].Value = i+1;
+                for (int i = 0; i < DlyaRangNx.Length; i++)
+                    for (int j = 0; j < DlyaRangNx.Length; j++)
+                        if (DlyaRangNx[i] == (double)childForm.dataGridView1[1, j].Value)
+                            childForm.dataGridView2.Rows[j].Cells[2].Value = i + 1;
+
+                // для Ny
+                var SortMasY = new double[n];
+                var DlyaRangNy = new double[n];
+                int kkk = 0;
+
+                for (int i = 0; i < n; i++) SortMasY[i] = childForm.d[i, 1];
+
+                // Сортировка по убыванию
+                for (int i = 0; i < SortMasY.Length; i++)
+                    for (int j = 0; j < SortMasY.Length - 1; j++)
+                    {
+                        if (SortMasY[j + 1] > SortMasY[j])
+                        {
+                            var t = SortMasY[j];
+                            SortMasY[j] = SortMasY[j + 1];
+                            SortMasY[j + 1] = t;
+                        }
+                    }
+                for (int i = 1; i < SortMasY.Length; i++)
+                    if (SortMasY[i] != SortMasY[i - 1])
+                    {
+                        var t = SortMasY[i];
+                        DlyaRangNy[kkk] = SortMasY[i - 1];
+                        DlyaRangNy[kkk + 1] = t;
+                        kkk++;
+                    }
+
+                for (int i = 0; i < DlyaRangNy.Length; i++)
+                    for (int j = 0; j < DlyaRangNy.Length; j++)
+                        if (DlyaRangNy[i] == (double)childForm.dataGridView1[2, j].Value)
+                            childForm.dataGridView2.Rows[j].Cells[3].Value = i + 1;
+
+                for (int i = 0; i < n; i++)
+                    childForm.dataGridView2.Rows[i].Cells[4].Value = (int)childForm.dataGridView2.Rows[i].Cells[3].Value - (int)childForm.dataGridView2.Rows[i].Cells[2].Value;
+                for (int i = 0; i < n; i++)
+                    childForm.dataGridView2.Rows[i].Cells[5].Value = Math.Pow((int)childForm.dataGridView2.Rows[i].Cells[4].Value, 2);
+
 
                 saveFileDialog1.FileName = openFileDialog1.FileName;
                 namefile = openFileDialog1.SafeFileName;

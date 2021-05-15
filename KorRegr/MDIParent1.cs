@@ -55,7 +55,7 @@ namespace KorRegr
             childForm.Text = "Окно " + childFormNumber++;
             openFileDialog1.Filter = file;
             openFileDialog1.FileName = namefile;
-            double x2, y2, xy, ee = 0, rr = 0, tt = 0, yy = 0, uu = 0;
+            double ee = 0, rr = 0, tt = 0, yy = 0, uu = 0;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 clearForm();
@@ -64,16 +64,14 @@ namespace KorRegr
 
                 foreach (string row in File.ReadLines(openFileDialog1.FileName))
                 {
-                    string[] DanneIzFile = row.Split(";".ToCharArray());
+                    string[] DanneIzFile = row.Split(';');
                     if (DanneIzFile[0] != string.Empty && DanneIzFile[1] != string.Empty && double.TryParse(DanneIzFile[0], out x) && double.TryParse(DanneIzFile[1], out y)) // проверка пустоты и на число ячейки в строке
                     {
                         MassivDannhIzFile[MassivDannhIzFile.Length - 2] = x; MassivDannhIzFile[MassivDannhIzFile.Length - 1] = y;
                         Array.Resize(ref MassivDannhIzFile, MassivDannhIzFile.Length + 2);
                         n++;
-                        x2 = Math.Pow(x, 2);
-                        y2 = Math.Pow(y, 2);
-                        xy = x * y;
-                        ee += x; rr += y; tt += x2; yy += y2; uu += xy;
+                        double x2 = Math.Pow(x, 2), y2 = Math.Pow(y, 2), xy = x * y;
+                        ee += x;  rr += y;  tt += x2;  yy += y2; uu += xy;
                         childForm.dataGridView1.Rows.Add(nomer++, x, y, x2, y2, xy); // добавление строки
                         childForm.chart1.Series[0].Points.AddXY(x, y); // добавление точки
                     }
@@ -89,12 +87,11 @@ namespace KorRegr
                         }
                 }
                 childForm.dataGridView1.Rows.Add("Сумма", ee, rr, tt, yy, uu);
-                childForm.dataGridView1.Rows.Add("Средняя величина", ee/nomer, rr/nomer, tt / nomer, yy / nomer, uu / nomer);
+                childForm.dataGridView1.Rows.Add("Средняя величина", ee / nomer, rr / nomer, tt / nomer, yy / nomer, uu / nomer);
 
 
                 // заполнение 2 таблицы
-                for (int i = 0; i < n; i++)
-                    childForm.dataGridView2.Rows.Add(childForm.d[i, 0], childForm.d[i, 1]);
+                for (int i = 0; i < n; i++) childForm.dataGridView2.Rows.Add(childForm.d[i, 0], childForm.d[i, 1]);
 
                 // для Nx
                 var SortMasX = new double[n];
@@ -104,16 +101,8 @@ namespace KorRegr
                 for (int i = 0; i < n; i++) SortMasX[i] = childForm.d[i, 0];
 
                 // Сортировка по убыванию
-                for (int i = 0; i < SortMasX.Length; i++)
-                    for (int j = 0; j < SortMasX.Length - 1; j++)
-                    {
-                        if (SortMasX[j + 1] > SortMasX[j])
-                        {
-                            var t = SortMasX[j];
-                            SortMasX[j] = SortMasX[j + 1];
-                            SortMasX[j + 1] = t;
-                        }
-                    }
+                Array.Sort(SortMasX);
+                Array.Reverse(SortMasX);
                 for (int i = 1; i < SortMasX.Length; i++)
                     if (SortMasX[i] != SortMasX[i - 1])
                     {
@@ -136,16 +125,8 @@ namespace KorRegr
                 for (int i = 0; i < n; i++) SortMasY[i] = childForm.d[i, 1];
 
                 // Сортировка по убыванию
-                for (int i = 0; i < SortMasY.Length; i++)
-                    for (int j = 0; j < SortMasY.Length - 1; j++)
-                    {
-                        if (SortMasY[j + 1] > SortMasY[j])
-                        {
-                            var t = SortMasY[j];
-                            SortMasY[j] = SortMasY[j + 1];
-                            SortMasY[j + 1] = t;
-                        }
-                    }
+                Array.Sort(SortMasY);
+                Array.Reverse(SortMasY);
                 for (int i = 1; i < SortMasY.Length; i++)
                     if (SortMasY[i] != SortMasY[i - 1])
                     {

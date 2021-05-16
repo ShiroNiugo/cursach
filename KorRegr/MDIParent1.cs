@@ -72,7 +72,7 @@ namespace KorRegr
                         n++;
                         double x2 = Math.Pow(x, 2), y2 = Math.Pow(y, 2), xy = x * y;
                         ee += x;  rr += y;  tt += x2;  yy += y2; uu += xy;
-                        childForm.dataGridView1.Rows.Add(nomer++, x, y, x2, y2, xy); // добавление строки
+                        childForm.dataGridView1.Rows.Add(nomer++, x, y, Math.Round(x2, 2), Math.Round(y2, 2), Math.Round(xy, 2)); // добавление строки
                         childForm.chart1.Series[0].Points.AddXY(x, y); // добавление точки
                     }
                 }

@@ -127,6 +127,8 @@ namespace KorRegr
                         }
 
                     for (int i = 0; i < DlyaRangN.Length; i++)
+                    {
+                        int ddd = 0, dd = childForm.dataGridView2.Rows[j].Cells[0].Value;
                         for (int j = 0; j < DlyaRangN.Length; j++)
                             if (y == false)
                             {
@@ -138,6 +140,7 @@ namespace KorRegr
                                 if (DlyaRangN[i] == (double)childForm.dataGridView1[2, j].Value)
                                     childForm.dataGridView2.Rows[j].Cells[3].Value = i + 1;
                             }
+                    }
                 }
                
                 SortAndRang(false); // для Nx

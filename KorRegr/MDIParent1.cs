@@ -47,7 +47,7 @@ namespace KorRegr
         {
             this.Close();
         }
-
+        
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form1 childForm = new Form1();
@@ -76,9 +76,10 @@ namespace KorRegr
                         childForm.chart1.Series[0].Points.AddXY(x, y); // добавление точки
                     }
                 }
+
                 childForm.d = new double[n, 2];
-                while (k < n)
-                {//запись из 1 в 2 массив
+                while (k < n) //запись из 1 в 2 массив
+                {
                     for (int i = 0; i < n; i++)
                         for (int j = 0; j < 2; j++)
                         {
@@ -92,59 +93,58 @@ namespace KorRegr
 
                 // заполнение 2 таблицы
                 for (int i = 0; i < n; i++) childForm.dataGridView2.Rows.Add(childForm.d[i, 0], childForm.d[i, 1]);
+                bool XorY = false;
+
+                void SortAndRang(bool y)
+                {
+                    var SortMas = new double[n];
+                    for (int i = 0; i < n; i++)
+                    {
+                        if (y == false) SortMas[i] = childForm.d[i, 0];
+                        else SortMas[i] = childForm.d[i, 1];
+                    }
+
+                    var DlyaRangN = new double[SortMas.Length];
+                    int kk = 0;
+
+                    Array.Sort(SortMas);
+                    Array.Reverse(SortMas);
+                    for (int i = 1; i < SortMas.Length; i++)
+                        if (SortMas[i] != SortMas[i - 1])
+                        {
+                            var t = SortMas[i];
+                            DlyaRangN[kk] = SortMas[i - 1];
+                            DlyaRangN[kk + 1] = t;
+                            kk++;
+                        }
+
+                    for (int i = 0; i < DlyaRangN.Length; i++)
+                        for (int j = 0; j < DlyaRangN.Length; j++)
+                        {
+                            if (y == false)
+                            {
+                                if (DlyaRangN[i] == (double)childForm.dataGridView1[1, j].Value)
+                                    childForm.dataGridView2.Rows[j].Cells[2].Value = i + 1;
+                            }
+                            else
+                            {
+                                if (DlyaRangN[i] == (double)childForm.dataGridView1[2, j].Value)
+                                    childForm.dataGridView2.Rows[j].Cells[3].Value = i + 1;
+                            }
+                        }
+                }
 
                 // для Nx
-                var SortMasX = new double[n];
-                var DlyaRangNx = new double[n];
-                int kk = 0;
-
-                for (int i = 0; i < n; i++) SortMasX[i] = childForm.d[i, 0];
-
-                // Сортировка по убыванию
-                Array.Sort(SortMasX);
-                Array.Reverse(SortMasX);
-                for (int i = 1; i < SortMasX.Length; i++)
-                    if (SortMasX[i] != SortMasX[i - 1])
-                    {
-                        var t = SortMasX[i];
-                        DlyaRangNx[kk] = SortMasX[i - 1];
-                        DlyaRangNx[kk + 1] = t;
-                        kk++;
-                    }
-
-                for (int i = 0; i < DlyaRangNx.Length; i++)
-                    for (int j = 0; j < DlyaRangNx.Length; j++)
-                        if (DlyaRangNx[i] == (double)childForm.dataGridView1[1, j].Value)
-                            childForm.dataGridView2.Rows[j].Cells[2].Value = i + 1;
-
+                SortAndRang(XorY);
+                XorY = true;
                 // для Ny
-                var SortMasY = new double[n];
-                var DlyaRangNy = new double[n];
-                int kkk = 0;
-
-                for (int i = 0; i < n; i++) SortMasY[i] = childForm.d[i, 1];
-
-                // Сортировка по убыванию
-                Array.Sort(SortMasY);
-                Array.Reverse(SortMasY);
-                for (int i = 1; i < SortMasY.Length; i++)
-                    if (SortMasY[i] != SortMasY[i - 1])
-                    {
-                        var t = SortMasY[i];
-                        DlyaRangNy[kkk] = SortMasY[i - 1];
-                        DlyaRangNy[kkk + 1] = t;
-                        kkk++;
-                    }
-
-                for (int i = 0; i < DlyaRangNy.Length; i++)
-                    for (int j = 0; j < DlyaRangNy.Length; j++)
-                        if (DlyaRangNy[i] == (double)childForm.dataGridView1[2, j].Value)
-                            childForm.dataGridView2.Rows[j].Cells[3].Value = i + 1;
+                SortAndRang(XorY);
 
                 for (int i = 0; i < n; i++)
+                {
                     childForm.dataGridView2.Rows[i].Cells[4].Value = (int)childForm.dataGridView2.Rows[i].Cells[3].Value - (int)childForm.dataGridView2.Rows[i].Cells[2].Value;
-                for (int i = 0; i < n; i++)
                     childForm.dataGridView2.Rows[i].Cells[5].Value = Math.Pow((int)childForm.dataGridView2.Rows[i].Cells[4].Value, 2);
+                }
 
 
                 saveFileDialog1.FileName = openFileDialog1.FileName;

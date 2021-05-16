@@ -21,7 +21,7 @@ namespace KorRegr
             InitializeComponent();
         }
 
-        double Xn, Xh, dX, x, y, x1, y1;
+        double x, y;
         string namefile = "", file = "Text files (*.csv)|*.csv";
 
         void clearForm()
@@ -45,7 +45,7 @@ namespace KorRegr
 
         private void ExitToolsStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Application.Exit();
         }
         
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -90,10 +90,8 @@ namespace KorRegr
                 childForm.dataGridView1.Rows.Add("Сумма", ee, rr, tt, yy, uu);
                 childForm.dataGridView1.Rows.Add("Средняя величина", ee / nomer, rr / nomer, tt / nomer, yy / nomer, uu / nomer);
 
-
                 // заполнение 2 таблицы
                 for (int i = 0; i < n; i++) childForm.dataGridView2.Rows.Add(childForm.d[i, 0], childForm.d[i, 1]);
-                bool XorY = false;
 
                 void SortAndRang(bool y)
                 {
@@ -110,8 +108,7 @@ namespace KorRegr
                     Array.Sort(SortMas);
                     Array.Reverse(SortMas);
                     for (int i = 1; i < SortMas.Length; i++)
-                        if (SortMas[i] != SortMas[i - 1])
-                        {
+                        if (SortMas[i] != SortMas[i - 1]){
                             var t = SortMas[i];
                             DlyaRangN[kk] = SortMas[i - 1];
                             DlyaRangN[kk + 1] = t;
@@ -120,7 +117,6 @@ namespace KorRegr
 
                     for (int i = 0; i < DlyaRangN.Length; i++)
                         for (int j = 0; j < DlyaRangN.Length; j++)
-                        {
                             if (y == false)
                             {
                                 if (DlyaRangN[i] == (double)childForm.dataGridView1[1, j].Value)
@@ -131,21 +127,16 @@ namespace KorRegr
                                 if (DlyaRangN[i] == (double)childForm.dataGridView1[2, j].Value)
                                     childForm.dataGridView2.Rows[j].Cells[3].Value = i + 1;
                             }
-                        }
                 }
-
-                // для Nx
-                SortAndRang(XorY);
-                XorY = true;
-                // для Ny
-                SortAndRang(XorY);
+               
+                SortAndRang(false); // для Nx
+                SortAndRang(true); // для Ny
 
                 for (int i = 0; i < n; i++)
                 {
                     childForm.dataGridView2.Rows[i].Cells[4].Value = (int)childForm.dataGridView2.Rows[i].Cells[3].Value - (int)childForm.dataGridView2.Rows[i].Cells[2].Value;
                     childForm.dataGridView2.Rows[i].Cells[5].Value = Math.Pow((int)childForm.dataGridView2.Rows[i].Cells[4].Value, 2);
                 }
-
 
                 saveFileDialog1.FileName = openFileDialog1.FileName;
                 namefile = openFileDialog1.SafeFileName;

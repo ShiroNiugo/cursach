@@ -88,7 +88,7 @@ namespace KorRegr
                         }
                 }
                 childForm.dataGridView1.Rows.Add("Сумма", ee, rr, tt, yy, uu);
-                childForm.dataGridView1.Rows.Add("Средняя величина", ee / nomer, rr / nomer, tt / nomer, yy / nomer, uu / nomer);
+                childForm.dataGridView1.Rows.Add("Средняя величина", Math.Round( ee / nomer, 2), Math.Round(rr / nomer, 2), Math.Round(tt / nomer, 2), Math.Round(yy / nomer, 2), Math.Round(uu / nomer, 2));
 
                 // заполнение 2 таблицы
                 for (int i = 0; i < n; i++) childForm.dataGridView2.Rows.Add(childForm.d[i, 0], childForm.d[i, 1]);

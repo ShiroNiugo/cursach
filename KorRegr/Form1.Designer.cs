@@ -142,10 +142,10 @@
             this.linkLabel3.AutoSize = true;
             this.linkLabel3.Location = new System.Drawing.Point(680, 79);
             this.linkLabel3.Name = "linkLabel3";
-            this.linkLabel3.Size = new System.Drawing.Size(55, 13);
+            this.linkLabel3.Size = new System.Drawing.Size(69, 13);
             this.linkLabel3.TabIndex = 3;
             this.linkLabel3.TabStop = true;
-            this.linkLabel3.Text = "linkLabel3";
+            this.linkLabel3.Text = "Диаграммы";
             // 
             // chart1
             // 

@@ -130,19 +130,16 @@ namespace KorRegr
                     //        if ((double)childForm.dataGridView1[y + 1, j].Value == DlyaRangN[i])
                     //            childForm.dataGridView2.Rows[j].Cells[y + 2].Value = i + 1;
 
-                    for (int i = 0; i < DlyaRangN.Length; i++)
-                    {
-                        double row = 1, kol = 0;
-                        for (int j = 0; j < DlyaRangN.Length; j++)
-                        {
-                            if ((double)childForm.dataGridView1[y + 1, j].Value == DlyaRangN[i])
-                            {
-                                row += i;
+                    for (int i = 0; i < DlyaRangN.Length; i++) {
+                        double row = 0, kol = 0;
+                        for (int j = 0; j < SortMas.Length; j++) {
+                            if (DlyaRangN[i] == SortMas[j]) {
+                                row += j+1;
                                 kol++;
                             }
                         }
-                        for (int j = 0; j < DlyaRangN.Length; j++)
-                            if ((double)childForm.dataGridView1[y + 1, j].Value == DlyaRangN[i])
+                        for (int j = 0; j < SortMas.Length; j++)
+                            if (DlyaRangN[i] == (double)childForm.dataGridView1[y + 1, j].Value)
                                 childForm.dataGridView2.Rows[j].Cells[y + 2].Value = Math.Round(row / kol, 1);
                     }
                     

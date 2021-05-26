@@ -137,19 +137,14 @@ namespace KorRegr
                         for (int j = 0; j < SortMas.Length; j++)
                             if (DlyaRangN[i] == (double)childForm.dataGridView1[y + 1, j].Value)
                                 childForm.dataGridView2.Rows[j].Cells[y + 2].Value = Math.Round(row / kol, 1);
-
                     }
-                    
                 }
 
                 SortAndRang(0); // для Nx
                 SortAndRang(1); // для Ny
 
-
-                //var a0 = Math.Round((SumY * SumX2 - SumXY * SumX) / (n - SumX2 - Math.Pow(SumX, 2)), 2);
-                //var a1 = Math.Round((n * SumXY - SumX * SumY) / n * SumX2 - Math.Pow(SumX2, 2), 2);
-                var a0 = Math.Round((sred(SumY) * sred(SumX2) - sred(SumXY) * sred(SumX)) / (n - sred(SumX2) - Math.Pow(SumX, 2)),2);
-                var a1 = Math.Round((n * sred(SumXY) - sred(SumX) * sred(SumY)) / n * sred(SumX2) - Math.Pow(sred(SumX2), 2), 2);
+                var a0 = Math.Round((SumY * SumX2 - SumXY * SumX) / (n * SumX2 - Math.Pow(SumX, 2)),2);
+                var a1 = Math.Round((n * SumXY - SumX * SumY) / (n * SumX2 - Math.Pow(SumX, 2)), 2);
 
                 var SortMasX = new double[n];
                 for (int i = 0; i < n; i++)
@@ -174,7 +169,7 @@ namespace KorRegr
                 {
                     double X = Tochki[i];
                     double notYx = a0 + a1 * X;//прямая
-                    //double notYx = a0 + a1 * (1 / x);//гипербола
+                    //double notYx = a0 + (a1 / x);//гипербола
                     //double notYx = a0 * Math.Pow(a1 , x);//показательная функция
 
                     childForm.chart1.Series[1].Points.AddXY(Tochki[i], notYx);

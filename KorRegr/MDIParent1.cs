@@ -77,6 +77,8 @@ namespace KorRegr
                     }
                 }
 
+                childForm.n = n;
+
                 double sred(double x)
                 {
                     return x / nomer;
@@ -100,108 +102,6 @@ namespace KorRegr
                 }
                 childForm.dataGridView1.Rows.Add("Сумма", Math.Round(SumX, 2), Math.Round(SumY, 2), Math.Round(SumX2, 2), Math.Round(SumY2, 2), Math.Round(SumXY, 2));
                 childForm.dataGridView1.Rows.Add("Средняя величина", Math.Round(sred(SumX), 2), Math.Round(sred(SumY), 2), Math.Round(sred(SumX2), 2), Math.Round(sred(SumY2), 2), Math.Round(sred(SumXY), 2));
-
-                // заполнение 2 таблицы
-                for (int i = 0; i < n; i++) childForm.dataGridView2.Rows.Add(childForm.d[i, 0], childForm.d[i, 1]);
-
-                void SortAndRang(int y)
-                {
-                    var SortMas = new double[n];
-                    for (int i = 0; i < n; i++)
-                        SortMas[i] = childForm.d[i, y];
-
-                    var DlyaRangN = new double[SortMas.Length];
-                    int kk = 0;
-
-                    Array.Sort(SortMas);
-                    Array.Reverse(SortMas);
-
-                    for (int i = 1; i < SortMas.Length; i++)
-                        if (SortMas[i] != SortMas[i - 1])
-                        {
-                            var t = SortMas[i];
-                            DlyaRangN[kk] = SortMas[i - 1];
-                            DlyaRangN[kk + 1] = t;
-                            kk++;
-                        }
-
-
-                    for (int i = 0; i < DlyaRangN.Length; i++) {
-                        double row = 0, kol = 0;
-                        for (int j = 0; j < SortMas.Length; j++) {
-                            if (DlyaRangN[i] == SortMas[j]) {
-                                row += j+1;
-                                kol++;
-                            }
-                        }
-                        for (int j = 0; j < SortMas.Length; j++)
-                            if (DlyaRangN[i] == (double)childForm.dataGridView1[y + 1, j].Value)
-                                childForm.dataGridView2.Rows[j].Cells[y + 2].Value = Math.Round(row / kol, 1);
-                    }
-                }
-
-                SortAndRang(0); // для Nx
-                SortAndRang(1); // для Ny
-
-                var a0 = Math.Round((SumY * SumX2 - SumXY * SumX) / (n * SumX2 - Math.Pow(SumX, 2)),2);
-                var a1 = Math.Round((n * SumXY - SumX * SumY) / (n * SumX2 - Math.Pow(SumX, 2)), 2);
-
-                var SortMasX = new double[n];
-                for (int i = 0; i < n; i++)
-                    SortMasX[i] = childForm.d[i, 0];
-
-                var Tochki = new double[SortMasX.Length];
-                int kkk = 0;
-
-                Array.Sort(SortMasX);
-                Array.Reverse(SortMasX);
-
-                for (int i = 1; i < SortMasX.Length; i++)
-                    if (SortMasX[i] != SortMasX[i - 1])
-                    {
-                        var t = SortMasX[i];
-                        Tochki[kkk] = SortMasX[i - 1];
-                        Tochki[kkk + 1] = t;
-                        kkk++;
-                    }
-
-                for (int i = 0; i < Tochki.Length; i++)
-                {
-                    double X = Tochki[i];
-                    double notYx = a0 + a1 * X;//прямая
-                    //double notYx = a0 + (a1 / x);//гипербола
-                    //double notYx = a0 * Math.Pow(a1 , x);//показательная функция
-
-                    childForm.chart1.Series[1].Points.AddXY(Tochki[i], notYx);
-                }
-
-                double symma = 0;
-
-                for (int i = 0; i < n; i++)
-                {
-                    childForm.dataGridView2.Rows[i].Cells[4].Value = Convert.ToDouble(childForm.dataGridView2.Rows[i].Cells[2].Value) - Convert.ToDouble(childForm.dataGridView2.Rows[i].Cells[3].Value);
-                    childForm.dataGridView2.Rows[i].Cells[5].Value = Math.Pow(Convert.ToDouble(childForm.dataGridView2.Rows[i].Cells[4].Value), 2);
-                    symma += Convert.ToDouble(childForm.dataGridView2.Rows[i].Cells[5].Value);
-                }
-                childForm.dataGridView2.Rows.Add("n = " + n, null, null, null, "Сумма", symma);
-
-                //расчеты корреляции
-                childForm.textBox4.Text = (n > 50 && !(n < 30)) ? Convert.ToString(Math.Round((1 - Math.Pow(Convert.ToDouble(childForm.textBox3.Text), 2)) / Math.Sqrt(n), 2))
-                    : Convert.ToString(Math.Round(Math.Sqrt(1 - Math.Pow(Convert.ToDouble(childForm.textBox3.Text), 2)) / Math.Sqrt(n - 2), 2));;
-                childForm.textBox5.Text = Convert.ToString(Math.Round(Math.Abs(Convert.ToDouble(childForm.textBox3.Text)) / Convert.ToDouble(childForm.textBox4.Text), 2));
-
-                var r = Math.Abs(Convert.ToDouble(childForm.textBox3.Text));
-
-
-                var svyaz = (r == 0) ? "отсутствует" : (0 < r && r < 0.3) ? "слабая" : (0.3 <= r && r <= 0.7) ? "средней силы" : "сильная";
-
-                childForm.label7.Text = "Связь между признаками х и у: " + svyaz;
-                var df = n - 2;
-                //childForm.textBox6.Text = Convert.ToString();
-
-                //после рангов
-                childForm.textBox7.Text = Convert.ToString(Math.Round(1-((6*symma)/(n*(Math.Pow(n, 2)-1))),2));
-
 
                 saveFileDialog1.FileName = openFileDialog1.FileName;
                 namefile = openFileDialog1.SafeFileName;
